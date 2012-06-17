@@ -1,5 +1,6 @@
 package com.scarytom;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -14,24 +15,71 @@ public class MatrixDegreesOfSeparationFinder implements
 	private final int[][] _degreesOfSeparation;
 
 	public MatrixDegreesOfSeparationFinder(final Set<Programmer> programmers) {
-		final int[][] relations = buildEmptySquareMatrix(programmers.size());
-		_programmerIndex = buildProgrammerIndex(programmers, relations);
 
-		_degreesOfSeparation = buildEmptySquareMatrix(programmers.size());
+		_programmerIndex = buildProgrammerIndex(programmers);
+		int[][] relations = buildProgrammerRelations(programmers,
+				_programmerIndex);
+		_degreesOfSeparation = computeDegreesOfSeparation(programmers,
+				relations);
+	}
+
+	private int[][] computeDegreesOfSeparation(
+			final Set<Programmer> programmers, final int[][] relations) {
+		int[][] degreesOfSeparation = buildEmptySquareMatrix(programmers.size());
 		MatrixCalculator matrixCalculator = new MatrixCalculator();
+		// holds current result of multiplication
 		int[][] current = matrixCalculator.copy(relations);
+		// holds result or multiplication in previous iteration. Compred to
+		// <code>current</code> we can determine if the alg has stabilized
 		int[][] previousDegrees;
+		// iteration counter (actually counts degrees of separation ;-))
 		int degree = 1;
-		updateDegrees(_degreesOfSeparation, current, degree);
-		// MatrixTools.printout(_degreesOfSeparation);
-
+		updateDegrees(degreesOfSeparation, current, degree);
 		do {
-			previousDegrees = matrixCalculator.copy(_degreesOfSeparation);
+			previousDegrees = matrixCalculator.copy(degreesOfSeparation);
 			current = matrixCalculator.multiply(relations, current);
 			degree++;
-			updateDegrees(_degreesOfSeparation, current, degree);
-			// MatrixTools.printout(_degreesOfSeparation);
-		} while (!MatrixTools.equals(previousDegrees, _degreesOfSeparation));
+			updateDegrees(degreesOfSeparation, current, degree);
+		} while (!MatrixTools.equals(previousDegrees, degreesOfSeparation));
+		// final adjustment: the diagonal must be reset to zero.
+		resetDiagonalToZero(degreesOfSeparation);
+		return degreesOfSeparation;
+	}
+
+	private void resetDiagonalToZero(final int[][] degreesOfSeparation) {
+		for (int i = 0; i < degreesOfSeparation.length; i++) {
+			degreesOfSeparation[i][i] = 0;
+		}
+	}
+
+	private int[][] buildEmptySquareMatrix(final int width) {
+		return new MatrixBuilder().withDefaults(0).withDimensions(width, width)
+				.build();
+	}
+
+	private HashMap<Programmer, Integer> buildProgrammerIndex(
+			final Set<Programmer> programmers) {
+		HashMap<Programmer, Integer> programmerIndex = Maps.newHashMap();
+		int index = 0;
+		for (Programmer programmer : programmers) {
+			programmerIndex.put(programmer, index++);
+		}
+		return programmerIndex;
+	}
+
+	private int[][] buildProgrammerRelations(final Set<Programmer> programmers,
+			final Map<Programmer, Integer> programmerIndex) {
+		final int[][] relations = buildEmptySquareMatrix(programmers.size());
+		for (Programmer programmer : programmers) {
+			int i = programmerIndex.get(programmer);
+			Set<Programmer> recommendations = programmer.recommendations();
+			for (Programmer recommendation : recommendations) {
+				Integer j = programmerIndex.get(recommendation);
+				relations[i][j] = 1;
+				relations[j][i] = 1;
+			}
+		}
+		return relations;
 	}
 
 	private void updateDegrees(final int[][] degreesOfSeparation,
@@ -43,31 +91,6 @@ public class MatrixDegreesOfSeparationFinder implements
 				}
 			}
 		}
-
-	}
-
-	private Map<Programmer, Integer> buildProgrammerIndex(
-			final Set<Programmer> programmers, final int[][] relations) {
-		final Map<Programmer, Integer> programmerIndex = Maps.newHashMap();
-		int index = 0;
-		for (Programmer programmer : programmers) {
-			programmerIndex.put(programmer, index++);
-		}
-		for (Programmer programmer : programmers) {
-			int i = programmerIndex.get(programmer);
-			Set<Programmer> recommendations = programmer.recommendations();
-			for (Programmer recommendation : recommendations) {
-				Integer j = programmerIndex.get(recommendation);
-				relations[i][j] = 1;
-				relations[j][i] = 1;
-			}
-		}
-		return programmerIndex;
-	}
-
-	private int[][] buildEmptySquareMatrix(final int width) {
-		return new MatrixBuilder().withDefaults(0).withDimensions(width, width)
-				.build();
 	}
 
 	@Override
