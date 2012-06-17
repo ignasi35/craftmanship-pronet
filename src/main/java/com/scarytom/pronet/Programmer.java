@@ -28,11 +28,12 @@ public class Programmer implements Comparable<Programmer> {
 
 	public void addRecommendation(final Programmer recommendation) {
 		this.recommendations.add(recommendation);
-	}	
+	}
 
 	public double kudos() {
 		return 0.0;
 	}
+
 	@Override
 	public String toString() {
 		return "Programmer [name=" + name + ", recommendations="
