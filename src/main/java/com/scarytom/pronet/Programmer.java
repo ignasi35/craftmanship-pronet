@@ -8,6 +8,7 @@ public class Programmer implements Comparable<Programmer> {
 	private final String name;
 	private final Set<Programmer> recommendations = Sets.newTreeSet();
 	private final Set<String> skills;
+	private double kudos;
 
 	public Programmer(final String name, final Set<String> skills) {
 		this.name = name;
@@ -30,8 +31,12 @@ public class Programmer implements Comparable<Programmer> {
 		this.recommendations.add(recommendation);
 	}
 
+	public void setKudos(final KudosProvider provide) {
+		kudos = provide.kudosFor(this);
+	}
+
 	public double kudos() {
-		return 0.0;
+		return kudos;
 	}
 
 	@Override
