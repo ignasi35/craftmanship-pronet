@@ -16,5 +16,7 @@ public class KudosProviderTest {
 		Network network = new NetworkBuilder().withProgrammer(bill).build();
 		KudosProvider kudosProvider = new KudosProvider(network);
 		Assert.assertEquals(1.0, kudosProvider.kudosFor(bill), 0.01);
+		Assert.assertEquals(1.0, bill.kudos(), 0.01);
+
 	}
 }

@@ -31,10 +31,14 @@ public class Programmer implements Comparable<Programmer> {
 		this.recommendations.add(recommendation);
 	}
 
+	// TODO remove from here. Kudos depends on the network, it's not an
+	// attribute of the programmer.
 	public void setKudos(final KudosProvider provide) {
 		kudos = provide.kudosFor(this);
 	}
 
+	// TODO remove from here. Kudos depends on the network, it's not an
+	// attribute of the programmer.
 	public double kudos() {
 		return kudos;
 	}
