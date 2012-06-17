@@ -14,6 +14,11 @@ public class MatrixDegreesOfSeparationFinder implements
 	private final Map<Programmer, Integer> _programmerIndex;
 	private final int[][] _degreesOfSeparation;
 
+	/**
+	 * TODO replace parameter by a Network
+	 * 
+	 * @param programmers
+	 */
 	public MatrixDegreesOfSeparationFinder(final Set<Programmer> programmers) {
 
 		_programmerIndex = buildProgrammerIndex(programmers);
