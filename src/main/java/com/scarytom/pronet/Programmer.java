@@ -30,7 +30,7 @@ public class Programmer implements Comparable<Programmer> {
 		this.recommendations.add(recommendation);
 	}	
 
-	public double getKudos() {
+	public double kudos() {
 		return 0.0;
 	}
 	@Override
