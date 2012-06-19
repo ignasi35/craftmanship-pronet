@@ -4,11 +4,12 @@ import com.scarytom.Network;
 
 public class KudosProvider {
 
-	public KudosProvider(final Network network) {
-	}
+    public KudosProvider(final Network network) {
 
-	public double kudosFor(final Programmer programmer) {
-		return 1.0;
-	}
+    }
+
+    public double kudosFor(final Programmer programmer) {
+        return 1.0;
+    }
 
 }
