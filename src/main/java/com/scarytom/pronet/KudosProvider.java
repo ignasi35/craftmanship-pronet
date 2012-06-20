@@ -11,7 +11,7 @@ import com.scarytom.ProgrammerIndex;
 public class KudosProvider {
 
 	private final Map<Programmer, Integer> _index;
-	private final double[][] _kudos;
+	private double[][] _kudos;
 
 	public KudosProvider(final Network network) {
 		_index = new ProgrammerIndex().withNetwork(network).build();
@@ -21,7 +21,7 @@ public class KudosProvider {
 		_kudos = new MatrixBuilder()
 				.withDimensions(network.programmers().size(), 1)
 				.withDefaults(1).buildWithDouble();
-		new MatrixCalculator().multiply(relations, _kudos);
+		_kudos = new MatrixCalculator().multiply(relations, _kudos);
 	}
 
 	public double kudosFor(final Programmer programmer) {

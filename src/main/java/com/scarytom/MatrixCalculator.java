@@ -30,7 +30,6 @@ public class MatrixCalculator {
 				result[i][j] = original[i][j];
 			}
 		}
-
 		return result;
 	}
 
