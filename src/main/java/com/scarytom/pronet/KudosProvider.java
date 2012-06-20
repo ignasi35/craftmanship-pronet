@@ -17,7 +17,7 @@ public class KudosProvider {
 		_index = new ProgrammerIndex().withNetwork(network).build();
 		double[][] relations = new NetworkRelations().withNetwork(network)
 				.withProgrammerIndex(_index).withSymmetry(false)
-				.buildWithDouble();
+				.withSelfRelation(true).buildWithDouble();
 		_kudos = new MatrixBuilder()
 				.withDimensions(network.programmers().size(), 1)
 				.withDefaults(1).buildWithDouble();

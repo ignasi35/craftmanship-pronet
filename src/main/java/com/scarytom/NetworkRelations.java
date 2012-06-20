@@ -10,6 +10,7 @@ public class NetworkRelations {
 	private Network _network;
 	private Map<Programmer, Integer> _programmerIndex = null;
 	private boolean _symmetric = false;
+	private boolean _selfRelation;
 
 	public NetworkRelations withNetwork(final Network network) {
 		_network = network;
@@ -43,7 +44,7 @@ public class NetworkRelations {
 			int i = _programmerIndex.get(programmer);
 			Set<Programmer> recommendations = programmer.recommendations();
 			for (Programmer recommendation : recommendations) {
-				Integer j = _programmerIndex.get(recommendation);
+				Integer j = getIndex(recommendation);
 				relations[i][j] = 1;
 				if (_symmetric) {
 					relations[j][i] = 1;
@@ -62,15 +63,25 @@ public class NetworkRelations {
 		for (Programmer programmer : programmers) {
 			int i = _programmerIndex.get(programmer);
 			Set<Programmer> recommendations = programmer.recommendations();
-			for (Programmer recommendation : recommendations) {
-				Integer j = _programmerIndex.get(recommendation);
-				relations[i][j] = 1;
-				if (_symmetric) {
-					relations[j][i] = 1;
+			if (_selfRelation && recommendations.size() == 0) {
+				Integer index = getIndex(programmer);
+				relations[index][index] = 1;
+			} else {
+				for (Programmer recommendation : recommendations) {
+					Integer j = getIndex(recommendation);
+					relations[i][j] = 1;
+					if (_symmetric) {
+						relations[j][i] = 1;
+					}
 				}
 			}
 		}
 		return relations;
+	}
+
+	private Integer getIndex(final Programmer recommendation) {
+		Integer j = _programmerIndex.get(recommendation);
+		return j;
 	}
 
 	private void assertIndexing() {
@@ -88,6 +99,11 @@ public class NetworkRelations {
 	private double[][] buildEmptySquareDoubleMatrix(final int size) {
 		return new MatrixBuilder().withDefaults(0).withDimensions(size, size)
 				.buildWithDouble();
+	}
+
+	public NetworkRelations withSelfRelation(final boolean selfRelation) {
+		_selfRelation = selfRelation;
+		return this;
 	}
 
 }
