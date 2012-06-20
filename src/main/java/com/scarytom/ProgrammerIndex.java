@@ -1,26 +1,26 @@
 package com.scarytom;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.scarytom.pronet.Programmer;
 
 public class ProgrammerIndex {
 
-    private Network _network;
+	private Network _network;
 
-    public ProgrammerIndex withNetwork(final Network network) {
-        _network = network;
-        return this;
-    }
+	public ProgrammerIndex withNetwork(final Network network) {
+		_network = network;
+		return this;
+	}
 
-    public HashMap<Programmer, Integer> build() {
-        HashMap<Programmer, Integer> programmerIndex = Maps.newHashMap();
-        int index = 0;
-        for (Programmer programmer : _network.programmers()) {
-            programmerIndex.put(programmer, index++);
-        }
-        return programmerIndex;
-    }
+	public Map<Programmer, Integer> build() {
+		Map<Programmer, Integer> programmerIndex = Maps.newTreeMap();
+		int index = 0;
+		for (Programmer programmer : _network.programmers()) {
+			programmerIndex.put(programmer, index++);
+		}
+		return programmerIndex;
+	}
 
 }
