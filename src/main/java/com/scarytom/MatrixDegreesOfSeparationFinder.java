@@ -22,7 +22,7 @@ public class MatrixDegreesOfSeparationFinder implements
 		_programmerIndex = new ProgrammerIndex().withNetwork(network).build();
 		int[][] relations = new NetworkRelations().withNetwork(network)
 				.withProgrammerIndex(_programmerIndex).withSymmetry(true)
-				.build();
+				.buildWithInt();
 		_degreesOfSeparation = computeDegreesOfSeparation(network, relations);
 	}
 
@@ -31,7 +31,7 @@ public class MatrixDegreesOfSeparationFinder implements
 		Set<Programmer> programmers = network.programmers();
 		int width = programmers.size();
 		int[][] degreesOfSeparation = new MatrixBuilder().withDefaults(0)
-				.withDimensions(width, width).build();
+				.withDimensions(width, width).buildWithInt();
 		MatrixCalculator matrixCalculator = new MatrixCalculator();
 		// holds current result of multiplication
 		int[][] current = matrixCalculator.copy(relations);

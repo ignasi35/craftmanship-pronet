@@ -23,7 +23,7 @@ public class NetworkRelationsTest {
 	public void testANetworkOfTwoReturns0010() {
 		Network network = buildNetworkOfTwo();
 
-		int[][] relationsMatrix = _relations.withNetwork(network).build();
+		int[][] relationsMatrix = _relations.withNetwork(network).buildWithInt();
 		Assert.assertTrue(Arrays.deepEquals(new int[][] { { 0, 0 }, { 1, 0 } },
 				relationsMatrix));
 	}
@@ -33,7 +33,7 @@ public class NetworkRelationsTest {
 		Network network = buildNetworkOfTwo();
 
 		int[][] relationsMatrix = _relations.withNetwork(network)
-				.withSymmetry(true).build();
+				.withSymmetry(true).buildWithInt();
 		Assert.assertTrue(Arrays.deepEquals(new int[][] { { 0, 1 }, { 1, 0 } },
 				relationsMatrix));
 	}

@@ -34,14 +34,11 @@ public class NetworkRelations {
 		return this;
 	}
 
-	public int[][] build() {
-		if (_programmerIndex == null) {
-			_programmerIndex = new ProgrammerIndex().withNetwork(_network)
-					.build();
-		}
+	public int[][] buildWithInt() {
+		assertIndexing();
 
 		Set<Programmer> programmers = _network.programmers();
-		final int[][] relations = buildEmptySquareMatrix(programmers.size());
+		final int[][] relations = buildEmptySquareIntMatrix(programmers.size());
 		for (Programmer programmer : programmers) {
 			int i = _programmerIndex.get(programmer);
 			Set<Programmer> recommendations = programmer.recommendations();
@@ -56,9 +53,41 @@ public class NetworkRelations {
 		return relations;
 	}
 
-	private int[][] buildEmptySquareMatrix(final int size) {
+	public double[][] buildWithDouble() {
+		assertIndexing();
+
+		Set<Programmer> programmers = _network.programmers();
+		final double[][] relations = buildEmptySquareDoubleMatrix(programmers
+				.size());
+		for (Programmer programmer : programmers) {
+			int i = _programmerIndex.get(programmer);
+			Set<Programmer> recommendations = programmer.recommendations();
+			for (Programmer recommendation : recommendations) {
+				Integer j = _programmerIndex.get(recommendation);
+				relations[i][j] = 1;
+				if (_symmetric) {
+					relations[j][i] = 1;
+				}
+			}
+		}
+		return relations;
+	}
+
+	private void assertIndexing() {
+		if (_programmerIndex == null) {
+			_programmerIndex = new ProgrammerIndex().withNetwork(_network)
+					.build();
+		}
+	}
+
+	private int[][] buildEmptySquareIntMatrix(final int size) {
 		return new MatrixBuilder().withDefaults(0).withDimensions(size, size)
-				.build();
+				.buildWithInt();
+	}
+
+	private double[][] buildEmptySquareDoubleMatrix(final int size) {
+		return new MatrixBuilder().withDefaults(0).withDimensions(size, size)
+				.buildWithDouble();
 	}
 
 }

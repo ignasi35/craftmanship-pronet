@@ -24,7 +24,7 @@ public class MatrixBuilder {
         return this;
     }
 
-    public int[][] build() {
+    public int[][] buildWithInt() {
         int[][] result = new int[_width][_height];
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {
@@ -34,7 +34,7 @@ public class MatrixBuilder {
         return result;
     }
 
-    public double[][] buildForDouble() {
+    public double[][] buildWithDouble() {
         double[][] result = new double[_width][_height];
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {
