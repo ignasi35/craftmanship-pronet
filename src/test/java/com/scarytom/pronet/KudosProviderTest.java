@@ -24,7 +24,7 @@ public class KudosProviderTest {
 	@Test
 	public void testKudosForSingleProgrammer() {
 		Programmer bill = new Programmer("Bill", Sets.<String> newHashSet());
-		Assert.assertEquals(1.0, getKudosProvider(bill).kudosFor(bill), 0.01);
+		Assert.assertEquals(1, getKudosProvider(bill).kudosFor(bill), 0.01);
 	}
 
 	@Test
