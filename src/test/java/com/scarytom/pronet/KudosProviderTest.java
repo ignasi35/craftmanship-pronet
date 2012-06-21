@@ -71,9 +71,27 @@ public class KudosProviderTest {
 
         KudosProvider kudosProvider = getKudosProvider(a, b, c, d);
 
-        assertEquals(1.53, kudosProvider.kudosFor(a), 0.01);
-        assertEquals(0.75, kudosProvider.kudosFor(b), 0.01);
-        assertEquals(1.56, kudosProvider.kudosFor(c), 0.01);
+        assertEquals(1.49, kudosProvider.kudosFor(a), 0.01);
+        assertEquals(0.78, kudosProvider.kudosFor(b), 0.01);
+        assertEquals(1.58, kudosProvider.kudosFor(c), 0.01);
         assertEquals(0.15, kudosProvider.kudosFor(d), 0.01);
+    }
+
+    @Test
+    public void severalProgrammersPassSomeKudosToEachOther() {
+        Programmer a = new Programmer("a", Sets.<String> newHashSet());
+        Programmer b = new Programmer("b", Sets.<String> newHashSet());
+        Programmer c = new Programmer("c", Sets.<String> newHashSet());
+
+        a.addRecommendation(b);
+        b.addRecommendation(c);
+        c.addRecommendation(a);
+        a.addRecommendation(c);
+
+        KudosProvider kudosProvider = getKudosProvider(a, b, c);
+
+        assertEquals(1.16, kudosProvider.kudosFor(a), 0.01);
+        assertEquals(0.65, kudosProvider.kudosFor(b), 0.01);
+        assertEquals(1.19, kudosProvider.kudosFor(c), 0.01);
     }
 }

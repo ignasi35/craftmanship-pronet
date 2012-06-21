@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import com.google.common.collect.Maps;
 import com.scarytom.MatrixBuilder;
 import com.scarytom.MatrixCalculator;
+import com.scarytom.MatrixTools;
 import com.scarytom.Network;
 import com.scarytom.NetworkRelations;
 import com.scarytom.ProgrammerIndex;
@@ -63,9 +64,10 @@ public class KudosProvider {
                     multiply(DUMPING_FACTOR, new MatrixCalculator()
                         .multiply(ratios, previousKudos)));
             double error = error(_kudos, previousKudos);
-            completed = error < 0.01;
+            completed = error < 0.000001;
             if (!completed) {
                 previousKudos = _kudos;
+                System.out.println(MatrixTools.printout(_kudos));
             }
         } while (!completed);
     }
